@@ -1,18 +1,24 @@
 # SignalDesk
 
-> A full-stack content monitoring and summarization platform built with Spring Boot 3, Vue 3, and MySQL 8.
+> A personal intelligence workspace for tracking websites, RSS feeds, PDFs, and notes in one place, with search and AI summaries built in.
 
-SignalDesk is a practical project for collecting information from websites, RSS feeds, PDFs, and notes into one workspace. It supports scheduled fetching, content archiving, search, summary generation, and source lifecycle management.
+SignalDesk helps individual researchers, analysts, and curious builders keep important information sources under watch. Instead of scattering links across bookmarks, notes, and RSS readers, you can collect sources into one workspace, fetch updates on a schedule, archive captured content, search old material, and generate summaries from what you have stored.
 
-## Project Highlights
+## Why SignalDesk
 
-- Multi-source ingestion: URL, RSS, PDF, and note sources
-- Scheduled and manual fetching with task history
-- Latest content review and fetch result tracking
-- Search over captured content
-- One-click summary generation for monitored information
-- Source pause, resume, delete, and batch management
-- Dashboard for recent activity and source overview
+- Track multiple source types in one product: URL, RSS, PDF, and notes
+- Keep a searchable archive instead of only reading the latest update
+- Review fetch activity, change history, and source status from one dashboard
+- Generate summaries from captured content without leaving the workspace
+- Manage source lifecycle with pause, resume, edit, delete, and batch actions
+
+## Typical Workflow
+
+1. Add a source you want to monitor.
+2. Fetch content manually or on a schedule.
+3. Review archived content and recent changes.
+4. Search historical material by keyword.
+5. Generate summaries from the stored results.
 
 ## Screenshots
 
@@ -31,6 +37,37 @@ SignalDesk is a practical project for collecting information from websites, RSS 
 ### Search / Summary
 
 ![Search Summary](./docs/screenshots/search-summary.png)
+
+## Core Features
+
+### Source Management
+
+- Create and edit monitored sources
+- Support URL, RSS, PDF, and note types
+- Configure fetch interval and tags
+- Pause, resume, and delete sources
+- Perform batch actions from the source list
+
+### Content Monitoring
+
+- Manual fetch and scheduled fetch
+- Fetch history and task status display
+- Parsed content storage and latest content review
+- Change tracking for monitored sources
+- Direct jump to original captured content
+
+### Search and Summary
+
+- Search captured content by keyword
+- Filter by source type
+- Review snippets from stored content quickly
+- Generate summaries from search results or source content
+
+### Dashboard
+
+- View recent captured documents
+- View active sources and recent fetch activity
+- Jump quickly to monitored content and source pages
 
 ## Tech Stack
 
@@ -56,37 +93,6 @@ SignalDesk is a practical project for collecting information from websites, RSS 
 - Pinia
 - Vue Router
 - Tailwind CSS
-
-## Core Features
-
-### Source Management
-
-- Create and edit monitored sources
-- Support URL, RSS, PDF, and note types
-- Configure fetch interval and tags
-- Pause, resume, and delete sources
-- Batch operations in the source list
-
-### Content Monitoring
-
-- Manual fetch and scheduled fetch
-- Fetch history and task status display
-- Parsed content storage and latest content view
-- Change tracking for monitored sources
-- Direct jump to original captured content
-
-### Search and Summary
-
-- Search captured content by keyword
-- Filter by source type
-- Review captured snippets quickly
-- Generate summaries from stored content
-
-### Dashboard
-
-- View today's new captured documents
-- View active sources and recent fetch activity
-- Quickly navigate to key monitored content
 
 ## Architecture
 
@@ -184,20 +190,14 @@ They include:
 - frontend design
 - project scaffold notes
 
-## Resume Positioning
+## Use Cases
 
-A strong resume description for this project is:
+SignalDesk is a good fit for scenarios like:
 
-`SignalDesk: a multi-source content monitoring, change tracking, and summarization platform based on Spring Boot 3 and Vue 3.`
-
-Compared with describing it only as a crawler, this framing better reflects the complete product capability:
-
-- source management
-- scheduled tasks
-- content archiving
-- search workflow
-- summary generation
-- admin-style frontend interface
+- Tracking specific websites for updates
+- Following RSS feeds alongside manually curated sources
+- Monitoring saved PDFs and research notes in the same workspace
+- Building a personal research archive with search and summaries
 
 ## Roadmap
 
@@ -206,6 +206,7 @@ Compared with describing it only as a crawler, this framing better reflects the 
 - Better summary quality and workflow
 - Source grouping and tagging improvements
 - Richer dashboard metrics and fetch diagnostics
+- Easier local setup with containerized dependencies
 
 ## License
 
