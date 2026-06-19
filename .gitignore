@@ -1,0 +1,40 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Java / Maven
+backend/target/
+backend/.mvn/
+*.class
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/*.tsbuildinfo
+
+# Env files
+.env
+.env.*
+!.env.example
+
+# Local runtime / temp
+tmp/
+temp/
+*.tmp
+
+# CodeBuddy / tool local state
+.codebuddy/
+codebuddy/
+
+# Optional local docs or exports
+*.zip

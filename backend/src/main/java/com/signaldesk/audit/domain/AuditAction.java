@@ -1,0 +1,17 @@
+package com.signaldesk.audit.domain;
+
+public enum AuditAction {
+    SOURCE_CREATE,
+    SOURCE_UPDATE,
+    SOURCE_DELETE,
+    SOURCE_STATUS_CHANGE,
+    TASK_TRIGGER,
+    TASK_RETRY,
+    TASK_COMPLETE,
+    TASK_FAIL,
+    SUMMARY_GENERATE,
+    SUMMARY_COMPLETE,
+    SUMMARY_FAIL,
+    USER_LOGIN,
+    USER_REGISTER
+}
