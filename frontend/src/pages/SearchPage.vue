@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue';
+import { ref } from 'vue';
 import { useSearchStore } from '@/stores/search';
 import { useSummaryStore } from '@/stores/summary';
 import SearchResultCard from '@/components/search/SearchResultCard.vue';
@@ -35,7 +35,7 @@ async function handleGenerateSummary() {
     });
     showDrawer.value = true;
   } catch {
-    // error in store
+    // error handled in store
   } finally {
     summaryGenerating.value = false;
   }
@@ -44,7 +44,6 @@ async function handleGenerateSummary() {
 
 <template>
   <div>
-    <!-- Search hero -->
     <div :class="[isInitial() ? 'py-16' : 'mb-6']">
       <h1 class="text-2xl font-bold text-gray-900 mb-4">搜索</h1>
       <div class="relative max-w-2xl">
@@ -63,7 +62,6 @@ async function handleGenerateSummary() {
         />
       </div>
 
-      <!-- Filter chips -->
       <div v-if="!isInitial()" class="flex flex-wrap items-center gap-2 mt-3">
         <span class="text-xs text-gray-500">类型:</span>
         <button
@@ -84,17 +82,14 @@ async function handleGenerateSummary() {
       </div>
     </div>
 
-    <!-- Loading -->
     <LoadingSkeleton v-if="searchStore.loading && !searchStore.results.length" :count="5" />
 
-    <!-- Error -->
     <ErrorState
       v-else-if="searchStore.error"
       :message="searchStore.error"
       @retry="searchStore.search()"
     />
 
-    <!-- Initial state -->
     <EmptyState
       v-else-if="isInitial()"
       icon="⌕"
@@ -102,14 +97,12 @@ async function handleGenerateSummary() {
       description="搜索所有已抓取的文档内容。"
     />
 
-    <!-- No results -->
     <EmptyState
       v-else-if="hasNoResults()"
       title="未找到匹配结果"
       description="试试其他关键词或调整筛选条件？"
     />
 
-    <!-- Results -->
     <template v-else-if="hasResults()">
       <div class="flex items-center justify-between mb-4">
         <p class="text-sm text-gray-500">
@@ -134,7 +127,6 @@ async function handleGenerateSummary() {
       </div>
     </template>
 
-    <!-- Summary drawer -->
     <SummaryDrawer
       :open="showDrawer"
       :summary="summaryStore.currentSummary"

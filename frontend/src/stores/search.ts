@@ -20,6 +20,7 @@ export const useSearchStore = defineStore('search', () => {
     } else {
       results.value = [];
       total.value = 0;
+      error.value = null;
     }
   });
 
@@ -34,13 +35,13 @@ export const useSearchStore = defineStore('search', () => {
         tagIds: filter.value.tagIds,
         dateFrom: filter.value.dateFrom,
         dateTo: filter.value.dateTo,
-        page: 1,
+        page: 0,
         size: 20,
       });
-      results.value = result.content;
-      total.value = result.totalElements;
+      results.value = result;
+      total.value = result.length;
     } catch (e: unknown) {
-      error.value = e instanceof Error ? e.message : 'æœç´¢å¤±è´¥';
+      error.value = e instanceof Error ? e.message : 'ËÑË÷Ê§°Ü';
     } finally {
       loading.value = false;
     }
@@ -48,6 +49,9 @@ export const useSearchStore = defineStore('search', () => {
 
   function setFilter(newFilter: Partial<SearchFilter>) {
     filter.value = { ...filter.value, ...newFilter };
+    if (query.value.trim()) {
+      void search();
+    }
   }
 
   return {

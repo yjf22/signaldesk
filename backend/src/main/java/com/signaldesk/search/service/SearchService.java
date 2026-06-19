@@ -7,18 +7,13 @@ import com.signaldesk.search.dto.SearchResultResponse;
 import com.signaldesk.source.domain.Source;
 import com.signaldesk.source.repository.SourceRepository;
 import com.signaldesk.source.service.TagService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class SearchService {
-
-    private static final Logger log = LoggerFactory.getLogger(SearchService.class);
     private final IndexService indexService;
     private final DocumentRepository documentRepository;
     private final SourceRepository sourceRepository;
@@ -38,42 +33,32 @@ public class SearchService {
      * Search with ES primary, MySQL FULLTEXT fallback.
      */
     public List<SearchResultResponse> search(SearchRequest request, Long userId) {
-        // Try Elasticsearch first
         List<SearchResultResponse> esResults = indexService.search(request, userId);
 
         if (!esResults.isEmpty()) {
             return esResults;
         }
 
-        // Fallback to MySQL FULLTEXT search
         return mysqlFulltextSearch(request, userId);
     }
 
     private List<SearchResultResponse> mysqlFulltextSearch(SearchRequest request, Long userId) {
-        if (request.getKeyword() == null || request.getKeyword().isBlank()) {
-            // Without keyword, just return recent documents
-            return documentRepository.findTop10ByUserIdAndIsCurrentTrueOrderByCreatedAtDesc(userId)
-                    .stream()
-                    .map(doc -> buildResult(doc))
-                    .toList();
-        }
+        int page = request.getPage() != null && request.getPage() >= 0 ? request.getPage() : 0;
+        int size = request.getSize() != null && request.getSize() > 0 ? request.getSize() : 20;
 
-        // MySQL FULLTEXT: we use the native query via repository
-        // For now, use LIKE search as a simpler fallback
-        var page = documentRepository.findByUserIdAndIsCurrentTrueOrderByCreatedAtDesc(
-                userId, PageRequest.of(request.getPage(), request.getSize()));
-
-        String keyword = "%" + request.getKeyword().toLowerCase() + "%";
-
-        return page.getContent().stream()
-                .filter(doc ->
-                        (doc.getTitle() != null && doc.getTitle().toLowerCase().contains(keyword)) ||
-                        (doc.getContentText() != null && doc.getContentText().toLowerCase().contains(keyword)))
-                .map(doc -> buildResult(doc))
+        return documentRepository.searchCurrentDocuments(
+                        userId,
+                        request.getKeyword(),
+                        request.getSourceType(),
+                        request.getSourceId(),
+                        PageRequest.of(page, size))
+                .getContent()
+                .stream()
+                .map(doc -> buildResult(doc, request.getKeyword()))
                 .toList();
     }
 
-    private SearchResultResponse buildResult(Document doc) {
+    private SearchResultResponse buildResult(Document doc, String keyword) {
         Source source = sourceRepository.findById(doc.getSourceId()).orElse(null);
         String sourceTitle = source != null ? source.getTitle() : "Unknown";
         String sourceType = source != null ? source.getSourceType().name() : "URL";
@@ -81,10 +66,7 @@ public class SearchService {
                 .map(t -> t.getName())
                 .toList();
 
-        String snippet = doc.getContentText();
-        if (snippet != null && snippet.length() > 300) {
-            snippet = snippet.substring(0, 300) + "...";
-        }
+        String snippet = buildSnippet(doc, keyword);
 
         return SearchResultResponse.builder()
                 .id(doc.getId())
@@ -96,5 +78,42 @@ public class SearchService {
                 .snippet(snippet)
                 .fetchedAt(doc.getCreatedAt() != null ? doc.getCreatedAt().toString() : null)
                 .build();
+    }
+
+    private String buildSnippet(Document doc, String keyword) {
+        String content = doc.getContentText();
+        if (content == null || content.isBlank()) {
+            return "";
+        }
+
+        String normalized = content.replaceAll("\\s+", " ").trim();
+        if (normalized.length() <= 220) {
+            return normalized;
+        }
+
+        if (keyword == null || keyword.isBlank()) {
+            return normalized.substring(0, 220) + "...";
+        }
+
+        String lowerContent = normalized.toLowerCase();
+        String lowerKeyword = keyword.toLowerCase();
+        int matchIndex = lowerContent.indexOf(lowerKeyword);
+        if (matchIndex < 0) {
+            return normalized.substring(0, 220) + "...";
+        }
+
+        int context = 90;
+        int start = Math.max(0, matchIndex - context);
+        int end = Math.min(normalized.length(), matchIndex + keyword.length() + context);
+        String snippet = normalized.substring(start, end).trim();
+
+        if (start > 0) {
+            snippet = "..." + snippet;
+        }
+        if (end < normalized.length()) {
+            snippet = snippet + "...";
+        }
+
+        return snippet;
     }
 }
