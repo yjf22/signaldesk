@@ -52,10 +52,6 @@ function hasChange(): boolean {
 }
 
 function goToDetail() {
-  if (props.selectable) {
-    emit('toggle-select', props.source.id);
-    return;
-  }
   router.push(`/sources/${props.source.id}`);
 }
 
