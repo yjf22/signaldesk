@@ -1,44 +1,36 @@
 # SignalDesk
 
-> A multi-source content monitoring, change tracking, and summarization platform built with Spring Boot, Vue 3, and MySQL.
+> A full-stack content monitoring and summarization platform built with Spring Boot 3, Vue 3, and MySQL 8.
 
-SignalDesk is a practical full-stack project for collecting information from multiple sources, archiving content, tracking updates, reviewing fetch history, and generating summaries from captured data.
+SignalDesk is a practical project for collecting information from websites, RSS feeds, PDFs, and notes into one workspace. It supports scheduled fetching, content archiving, search, summary generation, and source lifecycle management.
 
-It is not just a simple crawler demo.  
-The project is positioned as an information monitoring product, with crawling as one of its core capabilities.
+## Project Highlights
 
-## Why This Project
+- Multi-source ingestion: URL, RSS, PDF, and note sources
+- Scheduled and manual fetching with task history
+- Latest content review and fetch result tracking
+- Search over captured content
+- One-click summary generation for monitored information
+- Source pause, resume, delete, and batch management
+- Dashboard for recent activity and source overview
 
-Many useful sources are scattered across websites, RSS feeds, PDFs, and personal notes.  
-SignalDesk tries to solve three practical problems:
+## Screenshots
 
-- collect important information into one workspace
-- revisit sources automatically instead of checking manually
-- keep searchable history and generate summaries from captured content
+### Dashboard
 
-## Features
+![Dashboard](./docs/screenshots/dashboard.png)
 
-### Information source management
+### Source List
 
-- Create and manage website, RSS, PDF, and note sources
-- Edit source metadata, fetch interval, and tags
-- Pause, resume, and delete sources
-- Batch operations for source management
+![Source List](./docs/screenshots/source-list.png)
 
-### Content collection and tracking
+### Source Detail
 
-- Manual fetch and scheduled fetch
-- Fetch task history and status display
-- Parsed content archiving
-- Recent content review
-- Change tracking for monitored sources
+![Source Detail](./docs/screenshots/source-detail.png)
 
-### Reading and productivity
+### Search / Summary
 
-- Source detail page with latest captured content
-- Search page for tracked content
-- Summary generation workflow
-- Dashboard for source overview and recent activity
+![Search Summary](./docs/screenshots/search-summary.png)
 
 ## Tech Stack
 
@@ -51,6 +43,7 @@ SignalDesk tries to solve three practical problems:
 - Flyway
 - MySQL 8
 - Redis
+- Elasticsearch
 - Jsoup
 - JWT
 - Maven
@@ -64,6 +57,37 @@ SignalDesk tries to solve three practical problems:
 - Vue Router
 - Tailwind CSS
 
+## Core Features
+
+### Source Management
+
+- Create and edit monitored sources
+- Support URL, RSS, PDF, and note types
+- Configure fetch interval and tags
+- Pause, resume, and delete sources
+- Batch operations in the source list
+
+### Content Monitoring
+
+- Manual fetch and scheduled fetch
+- Fetch history and task status display
+- Parsed content storage and latest content view
+- Change tracking for monitored sources
+- Direct jump to original captured content
+
+### Search and Summary
+
+- Search captured content by keyword
+- Filter by source type
+- Review captured snippets quickly
+- Generate summaries from stored content
+
+### Dashboard
+
+- View today's new captured documents
+- View active sources and recent fetch activity
+- Quickly navigate to key monitored content
+
 ## Architecture
 
 ```text
@@ -72,7 +96,7 @@ User
   -> Spring Boot Backend
      -> MySQL
      -> Redis
-     -> Elasticsearch / OpenSearch
+     -> Elasticsearch
      -> External content sources
 ```
 
@@ -80,47 +104,31 @@ User
 
 ```text
 .
-├─ backend/                      Spring Boot backend
-├─ frontend/                     Vue 3 frontend
-├─ docs/                         Requirements and design documents
-├─ docker/                       Container-related files
-├─ create_signaldesk_database.sql
-└─ README.md
+|- backend/                        Spring Boot backend
+|- frontend/                       Vue 3 frontend
+|- docs/                           Requirements and design documents
+|- docker/                         Container-related files
+|- create_signaldesk_database.sql  Database bootstrap script
+`- README.md
 ```
-
-## Core Modules
-
-- `auth`: login, register, JWT authentication
-- `source`: source management and source status control
-- `crawltask`: manual and scheduled fetching
-- `document`: parsed content storage and latest content view
-- `dashboard`: overview statistics and recent changes
-- `summary`: generated summaries for tracked content
-- `search`: content retrieval and filtering
-- `infrastructure`: common exception, response, and config handling
 
 ## Quick Start
 
 ### 1. Prepare dependencies
 
-Make sure the following services are available locally:
+Make sure these services are available locally:
 
 - MySQL 8
 - Redis
-- Elasticsearch or OpenSearch
+- Elasticsearch
 
-Default backend configuration is in [backend/src/main/resources/application.yml](C:\Users\28145\Documents\New project 3\backend\src\main\resources\application.yml).
+Default configuration file:
 
-Default local database connection:
-
-- Host: `localhost`
-- Port: `3307`
-- Database: `signaldesk`
-- Username: `root`
+- [backend/src/main/resources/application.yml](./backend/src/main/resources/application.yml)
 
 ### 2. Create database
 
-You can create the database manually:
+You can either run the SQL below manually:
 
 ```sql
 CREATE DATABASE IF NOT EXISTS signaldesk
@@ -130,7 +138,7 @@ COLLATE utf8mb4_unicode_ci;
 
 Or use the provided script:
 
-- [create_signaldesk_database.sql](C:\Users\28145\Documents\New project 3\create_signaldesk_database.sql)
+- [create_signaldesk_database.sql](./create_signaldesk_database.sql)
 
 ### 3. Start backend
 
@@ -139,7 +147,7 @@ cd backend
 mvn spring-boot:run
 ```
 
-Backend runs on:
+Backend default address:
 
 - `http://localhost:8080`
 
@@ -151,60 +159,53 @@ npm install
 npm run dev
 ```
 
-Frontend runs on:
+Frontend default address:
 
 - `http://localhost:5173`
 
-## Development Notes
+## Default Local Setup
 
-- Flyway is enabled for schema migration
-- Hibernate uses `ddl-auto: validate`
-- MySQL 8 is the default local database
-- Local development currently assumes Redis and Elasticsearch are available
-- Some design documents in `docs/` may continue to evolve as the project is refined
+- MySQL host: `127.0.0.1`
+- MySQL port: `3307`
+- Database: `signaldesk`
+- Username: `root`
 
 ## Documentation
 
-Project documents are available in [docs/README.md](C:\Users\28145\Documents\New project 3\docs\README.md):
+Project documents are available in:
 
-- Requirements analysis
-- System design
-- Database design
-- Frontend design
-- Scaffold notes
+- [docs/README.md](./docs/README.md)
 
-## Suggested GitHub Additions
+They include:
 
-You can improve the repository homepage later by adding:
-
-- screenshots of dashboard, source list, and source detail pages
-- deployment instructions
-- API examples
-- roadmap progress
-- demo GIFs
+- requirements analysis
+- system design
+- database design
+- frontend design
+- project scaffold notes
 
 ## Resume Positioning
 
-A better way to describe this project on a resume:
+A strong resume description for this project is:
 
-`SignalDesk: a multi-source content monitoring, change tracking, and summarization platform based on Spring Boot and Vue 3`
+`SignalDesk: a multi-source content monitoring, change tracking, and summarization platform based on Spring Boot 3 and Vue 3.`
 
-This is stronger than describing it only as a crawler, because the project also includes:
+Compared with describing it only as a crawler, this framing better reflects the complete product capability:
 
 - source management
-- task scheduling
+- scheduled tasks
 - content archiving
 - search workflow
 - summary generation
-- front-end management UI
+- admin-style frontend interface
 
 ## Roadmap
 
-- Better article-level extraction for complex dynamic websites
-- Stronger search experience
+- Better article-level extraction for complex websites
+- Stronger search and filtering capability
 - Better summary quality and workflow
-- Source grouping and filtering improvements
-- Richer dashboard metrics and failure insights
+- Source grouping and tagging improvements
+- Richer dashboard metrics and fetch diagnostics
 
 ## License
 
