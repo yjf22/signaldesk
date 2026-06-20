@@ -6,6 +6,54 @@
 
 SignalDesk helps individual researchers, analysts, and curious builders keep important information sources under watch. Instead of scattering links across bookmarks, notes, and RSS readers, you can collect sources into one workspace, fetch updates on a schedule, archive captured content, search old material, and generate summaries from what you have stored.
 
+## Quick Start
+
+The easiest way to run SignalDesk locally is with Docker Compose.
+
+### 1. Start everything
+
+```bash
+cd docker
+docker compose up --build
+```
+
+If you prefer background mode:
+
+```bash
+docker compose up -d --build
+```
+
+### 2. Open the app
+
+- Frontend: `http://localhost:5173`
+- Backend API: `http://localhost:8080`
+- Elasticsearch: `http://localhost:9200`
+- MySQL: `127.0.0.1:3308`
+
+### 3. Sign in
+
+You can either:
+
+- register a new account from the login page, or
+- use the seeded demo account on a fresh database:
+  - username: `demo`
+  - password: `test123`
+
+Note: the demo account is inserted only when the database is initialized for the first time. If you already have old MySQL data, it may not be recreated automatically.
+
+### 4. Stop services
+
+```bash
+cd docker
+docker compose down
+```
+
+To remove data volumes too:
+
+```bash
+docker compose down -v
+```
+
 ## Why SignalDesk
 
 - Track multiple source types in one product: URL, RSS, PDF, and notes
@@ -121,7 +169,9 @@ User
 `- README.zh-CN.md                 Chinese README
 ```
 
-## Quick Start
+## Manual Development Setup
+
+If you do not want to use Docker, you can still run the project manually.
 
 ### 1. Prepare dependencies
 
@@ -134,6 +184,13 @@ Make sure these services are available locally:
 Default configuration file:
 
 - [backend/src/main/resources/application.yml](./backend/src/main/resources/application.yml)
+
+Important defaults in manual mode:
+
+- MySQL host: `127.0.0.1`
+- MySQL port: `3307`
+- Database: `signaldesk`
+- Username: `root`
 
 ### 2. Create database
 
@@ -156,10 +213,6 @@ cd backend
 mvn spring-boot:run
 ```
 
-Backend default address:
-
-- `http://localhost:8080`
-
 ### 4. Start frontend
 
 ```bash
@@ -167,17 +220,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
-Frontend default address:
-
-- `http://localhost:5173`
-
-## Default Local Setup
-
-- MySQL host: `127.0.0.1`
-- MySQL port: `3307`
-- Database: `signaldesk`
-- Username: `root`
 
 ## Documentation
 
@@ -209,7 +251,6 @@ SignalDesk is a good fit for scenarios like:
 - Better summary quality and workflow
 - Source grouping and tagging improvements
 - Richer dashboard metrics and fetch diagnostics
-- Easier local setup with containerized dependencies
 
 ## Feedback
 

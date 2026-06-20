@@ -6,6 +6,54 @@
 
 SignalDesk 面向独立研究者、分析型用户，以及希望建立个人信息工作流的开发者。你可以把分散在书签、RSS 阅读器、笔记工具里的信息源集中到一个工作台中，按计划抓取内容、归档历史文本、搜索旧资料，并基于已保存内容生成摘要。
 
+## 快速开始
+
+目前门槛最低的本地启动方式是直接使用 Docker Compose。
+
+### 1. 一键启动
+
+```bash
+cd docker
+docker compose up --build
+```
+
+如果你不想一直看日志，可以后台启动：
+
+```bash
+docker compose up -d --build
+```
+
+### 2. 打开项目
+
+- 前端：`http://localhost:5173`
+- 后端：`http://localhost:8080`
+- Elasticsearch：`http://localhost:9200`
+- MySQL：`127.0.0.1:3308`
+
+### 3. 登录方式
+
+你可以选择：
+
+- 在登录页直接注册一个新账号
+- 或在全新数据库上使用演示账号：
+  - 用户名：`demo`
+  - 密码：`test123`
+
+注意：演示账号只会在数据库第一次初始化时写入。如果你本地已经有旧数据卷，可能不会再次自动插入。
+
+### 4. 关闭项目
+
+```bash
+cd docker
+docker compose down
+```
+
+如果连数据一起清空：
+
+```bash
+docker compose down -v
+```
+
 ## 为什么使用 SignalDesk
 
 - 在一个产品中统一管理 URL、RSS、PDF 和笔记信息源
@@ -121,11 +169,13 @@ SignalDesk 面向独立研究者、分析型用户，以及希望建立个人信
 `- README.zh-CN.md                 中文说明
 ```
 
-## 快速开始
+## 手动开发启动
+
+如果你不想使用 Docker，也可以手动启动项目。
 
 ### 1. 准备依赖服务
 
-请确保本地已具备以下服务：
+请确保本地已经具备以下服务：
 
 - MySQL 8
 - Redis
@@ -134,6 +184,13 @@ SignalDesk 面向独立研究者、分析型用户，以及希望建立个人信
 默认配置文件：
 
 - [backend/src/main/resources/application.yml](./backend/src/main/resources/application.yml)
+
+手动模式下的默认数据库配置：
+
+- MySQL Host: `127.0.0.1`
+- MySQL Port: `3307`
+- Database: `signaldesk`
+- Username: `root`
 
 ### 2. 创建数据库
 
@@ -156,10 +213,6 @@ cd backend
 mvn spring-boot:run
 ```
 
-后端默认地址：
-
-- `http://localhost:8080`
-
 ### 4. 启动前端
 
 ```bash
@@ -167,17 +220,6 @@ cd frontend
 npm install
 npm run dev
 ```
-
-前端默认地址：
-
-- `http://localhost:5173`
-
-## 本地默认配置
-
-- MySQL Host: `127.0.0.1`
-- MySQL Port: `3307`
-- Database: `signaldesk`
-- Username: `root`
 
 ## 文档
 
@@ -209,7 +251,6 @@ SignalDesk 适合以下场景：
 - 提升摘要质量和使用流程
 - 完善信息源分组与标签管理
 - 增加更丰富的仪表盘指标和抓取诊断
-- 提供更轻量的一键本地启动方式
 
 ## 反馈
 
