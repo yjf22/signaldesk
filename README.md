@@ -1,5 +1,7 @@
 # SignalDesk
 
+[English](./README.md) | [简体中文](./README.zh-CN.md)
+
 > A personal intelligence workspace for tracking websites, RSS feeds, PDFs, and notes in one place, with search and AI summaries built in.
 
 SignalDesk helps individual researchers, analysts, and curious builders keep important information sources under watch. Instead of scattering links across bookmarks, notes, and RSS readers, you can collect sources into one workspace, fetch updates on a schedule, archive captured content, search old material, and generate summaries from what you have stored.
@@ -115,7 +117,8 @@ User
 |- docs/                           Requirements and design documents
 |- docker/                         Container-related files
 |- create_signaldesk_database.sql  Database bootstrap script
-`- README.md
+|- README.md                       English README
+`- README.zh-CN.md                 Chinese README
 ```
 
 ## Quick Start
