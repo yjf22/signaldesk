@@ -211,6 +211,10 @@ SignalDesk is a good fit for scenarios like:
 - Richer dashboard metrics and fetch diagnostics
 - Easier local setup with containerized dependencies
 
+## Feedback
+
+If you have suggestions, ideas, or find any issues, feel free to open an Issue.
+
 ## License
 
 MIT
